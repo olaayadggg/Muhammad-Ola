@@ -27,14 +27,14 @@ export default function VenueSection({ lang }: Props) {
       <style>{`
         @media (max-width: 768px) {
           .gm-section { flex-direction: column !important; min-height: unset !important; }
-          .gm-image-wrap { flex: 0 0 320px !important; width: 100% !important; }
+          .gm-image-wrap { order: -1 !important; flex: 0 0 300px !important; width: 100% !important; }
           .gm-image-fade {
             top: auto !important; left: 0 !important; right: 0 !important;
             bottom: 0 !important; width: 100% !important; height: 80px !important;
             background: linear-gradient(to bottom, transparent, var(--cream)) !important;
           }
-          .gm-form-col { padding: 40px 24px 60px !important; }
-          .gm-form-inner { max-width: 100% !important; }
+          .gm-card-col { padding: 40px 24px 60px !important; }
+          .gm-venue-card { text-align: center !important; padding: 40px 28px !important; }
         }
       `}</style>
 
@@ -43,6 +43,15 @@ export default function VenueSection({ lang }: Props) {
         delay={0.15}
         duration={1.1}
         distance={50}
+        className="gm-card-col"
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "60px 40px",
+        }}
       >
         <div
           style={{
@@ -81,6 +90,7 @@ export default function VenueSection({ lang }: Props) {
 
         <Animate delay={0.2} duration={1.0} distance={24}>
           <div
+            className="gm-venue-card"
             style={{
               maxWidth: "520px",
               margin: "0 auto",

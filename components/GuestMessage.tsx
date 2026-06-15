@@ -56,13 +56,18 @@ export default function GuestMessage({ lang }: Props) {
       <style>{`
         @media (max-width: 768px) {
           .gm-section { flex-direction: column !important; min-height: unset !important; }
-          .gm-image-wrap { flex: 0 0 320px !important; width: 100% !important; }
+          .gm-image-wrap { flex: 0 0 300px !important; width: 100% !important; }
           .gm-image-fade {
             top: auto !important; left: 0 !important; right: 0 !important;
             bottom: 0 !important; width: 100% !important; height: 80px !important;
             background: linear-gradient(to bottom, transparent, var(--cream)) !important;
           }
-          .gm-form-col { padding: 40px 24px 60px !important; }
+          .gm-form-col {
+            padding: 40px 24px 60px !important;
+            text-align: center !important;
+            align-items: center !important;
+          }
+          .gm-form-col button { align-self: center !important; }
           .gm-form-inner { max-width: 100% !important; }
         }
       `}</style>

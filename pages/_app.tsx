@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>Muhammad &amp; Ola — Wedding Invitation</title>
         <meta name="description" content="We joyfully invite you to celebrate our wedding" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       </Head>
       <Component {...pageProps} />
     </>
