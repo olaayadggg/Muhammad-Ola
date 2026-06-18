@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 import type { Lang } from '../pages/index'
 import Animate from './Animate'
 
@@ -9,11 +10,27 @@ export default function GuestMessage({ lang }: Props) {
   const [name, setName] = useState('')
   const [message, setMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
   const [focused, setFocused] = useState<string | null>(null)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name.trim() || !message.trim()) return
-    setSubmitted(true)
+    setLoading(true)
+    setError(false)
+    try {
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        { name, message },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+      )
+      setSubmitted(true)
+    } catch {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const inputStyle = (field: string): React.CSSProperties => ({
@@ -172,26 +189,39 @@ export default function GuestMessage({ lang }: Props) {
                   }}
                 />
               </div>
-              <button
-                onClick={handleSubmit}
-                disabled={!name.trim() || !message.trim()}
-                style={{
-                  border: `1px solid ${name.trim() && message.trim() ? 'var(--gold)' : 'var(--border)'}`,
-                  background: 'transparent',
-                  padding: '16px 48px',
-                  fontFamily: isAr ? 'Noto Naskh Arabic, serif' : 'var(--font-montserrat)',
-                  fontSize: '11px',
-                  letterSpacing: isAr ? '0' : '3px',
-                  textTransform: isAr ? 'none' : 'uppercase',
-                  color: name.trim() && message.trim() ? 'var(--gold-dark)' : 'var(--text-light)',
-                  cursor: name.trim() && message.trim() ? 'pointer' : 'not-allowed',
-                  transition: 'all 0.3s ease',
-                  alignSelf: isAr ? 'flex-end' : 'flex-start',
-                  width: 'fit-content',
-                }}
-              >
-                {isAr ? 'أرسل رسالتك ♡' : 'Send Wishes ♡'}
-              </button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignSelf: isAr ? 'flex-end' : 'flex-start' }}>
+                <button
+                  onClick={handleSubmit}
+                  disabled={!name.trim() || !message.trim() || loading}
+                  style={{
+                    border: `1px solid ${name.trim() && message.trim() && !loading ? 'var(--gold)' : 'var(--border)'}`,
+                    background: 'transparent',
+                    padding: '16px 48px',
+                    fontFamily: isAr ? 'Noto Naskh Arabic, serif' : 'var(--font-montserrat)',
+                    fontSize: '11px',
+                    letterSpacing: isAr ? '0' : '3px',
+                    textTransform: isAr ? 'none' : 'uppercase',
+                    color: name.trim() && message.trim() && !loading ? 'var(--gold-dark)' : 'var(--text-light)',
+                    cursor: name.trim() && message.trim() && !loading ? 'pointer' : 'not-allowed',
+                    transition: 'all 0.3s ease',
+                    width: 'fit-content',
+                  }}
+                >
+                  {loading
+                    ? (isAr ? 'جارٍ الإرسال...' : 'Sending...')
+                    : (isAr ? 'أرسل رسالتك ♡' : 'Send Wishes ♡')}
+                </button>
+                {error && (
+                  <p style={{
+                    fontFamily: isAr ? 'Noto Naskh Arabic, serif' : 'var(--font-cormorant)',
+                    fontSize: '15px',
+                    color: '#b94a48',
+                    direction: isAr ? 'rtl' : 'ltr',
+                  }}>
+                    {isAr ? 'حدث خطأ، يرجى المحاولة مجدداً.' : 'Something went wrong. Please try again.'}
+                  </p>
+                )}
+              </div>
             </div>
           )}
         </div>

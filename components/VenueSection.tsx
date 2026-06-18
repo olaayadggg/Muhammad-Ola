@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Lang } from "../pages/index";
 import Animate from "./Animate";
 
@@ -172,6 +173,7 @@ export default function VenueSection({ lang }: Props) {
                 lineHeight: 1.8,
                 direction: isAr ? "rtl" : "ltr",
                 marginBottom: "8px",
+                textAlign:"center"
               }}
             >
               {isAr ? "الإسكندرية، مصر" : "Alexandria, Egypt"}
@@ -187,14 +189,15 @@ export default function VenueSection({ lang }: Props) {
                 color: "var(--text-light)",
                 direction: isAr ? "rtl" : "ltr",
                 lineHeight: 1.8,
+                textAlign:"center"
               }}
             >
               {isAr ? "٦:٠٠ مساءً" : "Saturday, 26 September 2026 · 6:00 PM"}
             </p>
 
-            <div style={{ marginTop: "32px" }}>
-              <a
-                href="google.com/maps?um=1&ie=UTF-8&fb=1&gl=eg&sa=X&geocode=KQWt82QAj_UUMR3-aHv_ADed&daddr=XMJF%2B88,+Bahig,+Second+Al+Amreya,+Alexandria+Governorate+5244741"
+            <div style={{ marginTop: "32px" , textAlign:"center" }}>
+              <Link
+                href="http://www.google.com/maps?um=1&ie=UTF-8&fb=1&gl=eg&sa=X&geocode=KQWt82QAj_UUMR3-aHv_ADed&daddr=XMJF%2B88,+Bahig,+Second+Al+Amreya,+Alexandria+Governorate+5244741"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -209,10 +212,11 @@ export default function VenueSection({ lang }: Props) {
                   textDecoration: "none",
                   borderBottom: "1px solid var(--gold-muted)",
                   paddingBottom: "3px",
+                  textAlign:"center"
                 }}
               >
                 {isAr ? "عرض على الخريطة ↗" : "View on Map ↗"}
-              </a>
+              </Link>
             </div>
           </div>
         </Animate>
