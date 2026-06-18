@@ -14,19 +14,53 @@ export default function GuestMessage({ lang }: Props) {
   const [error, setError] = useState(false)
   const [focused, setFocused] = useState<string | null>(null)
 
+  // const handleSubmit = async () => {
+  //   if (!name.trim() || !message.trim()) return
+  //   setLoading(true)
+  //   setError(false)
+  //   try {
+  //     await emailjs.send(
+  //       process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+  //       process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+  //       { name, message },
+  //       process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+  //     )
+  //     setSubmitted(true)
+  //   } catch {
+  //     setError(true)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
+
   const handleSubmit = async () => {
     if (!name.trim() || !message.trim()) return
     setLoading(true)
     setError(false)
+    
     try {
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        { name, message },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-      )
+      // Fire both EmailJS requests concurrently
+      await Promise.all([
+        // First email destination
+        emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+          { name, message },
+          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+        ),
+        // Second email destination
+        emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID_2!,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_2!,
+          { name, message },
+          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY_2!
+        )
+      ])
+      
       setSubmitted(true)
-    } catch {
+    } catch (err) {
+      console.error("EmailJS Error:", err)
       setError(true)
     } finally {
       setLoading(false)
